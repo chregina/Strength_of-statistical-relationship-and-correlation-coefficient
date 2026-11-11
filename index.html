@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>עוצמת קשר סטטיסטי ומקדם המתאם (מקדם r)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Rubik -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&family=Lora:ital@1&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Rubik', 'sans-serif'],
+                        math: ['Lora', 'Georgia', 'serif'],
+                    },
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#172033',
+                            950: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .poster-card {
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        }
+
+        .scale-block {
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .scale-block:hover {
+            transform: scaleY(1.08);
+        }
+
+        .correlation-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .correlation-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 24px -4px rgba(0, 0, 0, 0.12);
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            height: 7px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .math-expr {
+            font-family: 'Lora', Georgia, serif;
+            font-style: italic;
+            direction: ltr;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="p-2 sm:p-4 md:p-6 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <div class="max-w-[1240px] mx-auto bg-white poster-card rounded-2xl overflow-hidden border border-slate-200 w-full">
+        
+        <!-- HEADER SECTION -->
+        <header class="bg-navy-900 text-white p-6 sm:p-8 text-center relative overflow-hidden">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3 text-white">
+                עוצמת קשר סטטיסטי ומקדם המתאם (מקדם <span class="math-expr">r</span>)
+            </h1>
+            <p class="max-w-3xl mx-auto text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
+                מקדם המתאם של פירסון (מקדם מתאם <span class="math-expr">r</span>) מודד את עוצמת הקשר והכיוון של הקשר הלינארי בין שני משתנים כמותיים, בטווח שבין <span dir="ltr" class="font-semibold">-1.0</span> ל-<span dir="ltr" class="font-semibold">+1.0</span>.
+            </p>
+        </header>
+
+        <!-- MAIN BODY CONTENT -->
+        <main class="p-4 sm:p-6 md:p-8 space-y-10">
+
+            <!-- SECTION 1: SCALE (LEFT TO RIGHT: -1.0 TO +1.0) -->
+            <section class="space-y-4">
+                <h2 class="text-center text-xl sm:text-2xl font-bold text-navy-900">
+                    סולם ערכי מקדם המתאם <span class="math-expr">r</span>
+                </h2>
+
+                <div class="max-w-5xl mx-auto overflow-x-auto custom-scroll pb-2">
+                    <div dir="ltr" class="min-w-[860px] space-y-3 px-4">
+                        
+                        <!-- 1. NUMBERS POSITIONED PRECISELY AT TICK MARKS & BOX CENTERS -->
+                        <div class="relative h-7 font-bold text-xs sm:text-sm select-none">
+                            <div class="absolute left-[4%] -translate-x-1/2 text-red-600 font-extrabold" dir="ltr">-1.0</div>
+                            <div class="absolute left-[17.8%] -translate-x-1/2 text-rose-600 font-bold" dir="ltr">-0.7</div>
+                            <div class="absolute left-[31.6%] -translate-x-1/2 text-pink-600 font-bold" dir="ltr">-0.4</div>
+                            <div class="absolute left-[50%] -translate-x-1/2 text-slate-900 font-black text-base -top-0.5" dir="ltr">0</div>
+                            <div class="absolute left-[68.4%] -translate-x-1/2 text-teal-600 font-bold" dir="ltr">+0.4</div>
+                            <div class="absolute left-[82.2%] -translate-x-1/2 text-emerald-600 font-bold" dir="ltr">+0.7</div>
+                            <div class="absolute left-[96%] -translate-x-1/2 text-emerald-700 font-extrabold" dir="ltr">+1.0</div>
+                        </div>
+
+                        <!-- 2. COLOR SCALE BAR (SPANNING FROM CENTER OF -1.0 BOX TO CENTER OF +1.0 BOX) -->
+                        <div class="relative w-[92%] mx-auto rounded-xl overflow-hidden shadow-md h-10 border border-slate-300 flex">
+                            <!-- Interval [-1.0 to -0.7] = 15% width -->
+                            <div class="w-[15%] bg-[#d92525] scale-block flex items-center justify-center border-r border-white/20" title="שלילי חזק / מושלם (-1.0 עד -0.7)"></div>
+                            <!-- Interval [-0.7 to -0.4] = 15% width -->
+                            <div class="w-[15%] bg-[#f43f5e] scale-block flex items-center justify-center border-r border-white/20" title="שלילי בינוני (-0.7 עד -0.4)"></div>
+                            <!-- Interval [-0.4 to 0.0] = 20% width -->
+                            <div class="w-[20%] bg-[#f97316] scale-block flex items-center justify-center border-r border-white/20" title="שלילי חלש (-0.4 עד 0)"></div>
+                            <!-- Interval [0.0 to +0.4] = 20% width -->
+                            <div class="w-[20%] bg-[#06b6d4] scale-block flex items-center justify-center border-r border-white/20" title="חיובי חלש (0 עד +0.4)"></div>
+                            <!-- Interval [+0.4 to +0.7] = 15% width -->
+                            <div class="w-[15%] bg-[#10b981] scale-block flex items-center justify-center border-r border-white/20" title="חיובי בינוני (+0.4 עד +0.7)"></div>
+                            <!-- Interval [+0.7 to +1.0] = 15% width -->
+                            <div class="w-[15%] bg-[#047857] scale-block flex items-center justify-center" title="חיובי חזק / מושלם (+0.7 עד +1.0)"></div>
+
+                            <!-- TICK MARKS ON BAR -->
+                            <div class="absolute left-0 top-0 h-full w-0.5 bg-red-700/60 pointer-events-none"></div>
+                            <div class="absolute left-[15%] top-0 h-full w-0.5 bg-white/60 pointer-events-none"></div>
+                            <div class="absolute left-[30%] top-0 h-full w-0.5 bg-white/60 pointer-events-none"></div>
+                            <div class="absolute left-[50%] top-0 h-full w-1 bg-slate-900/70 pointer-events-none"></div>
+                            <div class="absolute left-[70%] top-0 h-full w-0.5 bg-white/60 pointer-events-none"></div>
+                            <div class="absolute left-[85%] top-0 h-full w-0.5 bg-white/60 pointer-events-none"></div>
+                            <div class="absolute right-0 top-0 h-full w-0.5 bg-emerald-900/60 pointer-events-none"></div>
+                        </div>
+
+                        <!-- 3. 9 SUMMARY BOXES (PROPORTIONALLY ALIGNED: CENTERS OF PERFECT 1.0, 0, -1.0 ARE EXACTLY AT THE TICK MARKS) -->
+                        <div class="flex gap-1 text-center text-xs pt-1 w-full">
+                            <!-- 1: שלילי מושלם (ממורכז בדיוק ב-1.0-) -->
+                            <div class="w-[8%] bg-red-100 border border-red-300 rounded-lg p-1 sm:p-1.5 text-red-700 flex flex-col justify-center items-center">
+                                <span class="font-bold text-[9px] sm:text-xs whitespace-nowrap">שלילי מושלם</span>
+                                <span class="text-[9px] sm:text-[11px] font-semibold mt-0.5 whitespace-nowrap" dir="ltr"><span class="math-expr">r</span> = -1.0</span>
+                            </div>
+                            <!-- 2: שלילי חזק (בין 1.0- ל-0.7-) -->
+                            <div class="w-[9.8%] bg-rose-50 border border-rose-200 rounded-lg p-1 sm:p-1.5 text-rose-700 flex flex-col justify-center items-center">
+                                <span class="font-bold text-[9px] sm:text-xs whitespace-nowrap">שלילי חזק</span>
+                                <span class="text-[8px] sm:text-[10px] font-semibold mt-0.5 whitespace-nowrap" dir="ltr">-1.0 &lt; <span class="math-expr">r</span> &le; -0.7</span>
+                            </div>
+                            <!-- 3: שלילי בינוני (בין 0.7- ל-0.4-) -->
+                            <div class="w-[13.8%] bg-pink-50 border border-pink-200 rounded-lg p-1 sm:p-1.5 text-pink-700 flex flex-col justify-center items-center">
+                                <span class="font-bold text-[10px] sm:text-xs whitespace-nowrap">שלילי בינוני</span>
+                                <span class="text-[9px] sm:text-[11px] font-semibold mt-0.5 whitespace-nowrap" dir="ltr">-0.7 &lt; <span class="math-expr">r</span> &le; -0.4</span>
+                            </div>
+                            <!-- 4: שלילי חלש (בין 0.4- ל-0) -->
+                            <div class="w-[14.4%] bg-orange-50 border border-orange-200 rounded-lg p-1 sm:p-1.5 text-orange-700 flex flex-col justify-center items-center">
+                                <span class="font-bold text-[10px] sm:text-xs whitespace-nowrap">שלילי חלש</span>
+                                <span class="text-[9px] sm:text-[11px] font-semibold mt-0.5 whitespace-nowrap" dir="ltr">-0.4 &lt; <span class="math-expr">r</span> &lt; 0</span>
+                            </div>
+                            <!-- 5: העדר קשר (ממורכז בדיוק ב-0) -->
+                            <div class="w-[8%] bg-slate-100 border border-slate-300 rounded-lg p-1 sm:p-1.5 text-slate-700 flex flex-col justify-center items-center">
+                                <span class="font-bold text-[9px] sm:text-xs whitespace-nowrap">העדר קשר</span>
+                                <span class="text-[9px] sm:text-[11px] font-semibold mt-0.5 whitespace-nowrap" dir="ltr"><span class="math-expr">r</span> = 0</span>
+                            </div>
+                            <!-- 6: חיובי חלש (בין 0 ל-0.4+) -->
+                            <div class="w-[14.4%] bg-cyan-50 border border-cyan-200 rounded-lg p-1 sm:p-1.5 text-cyan-700 flex flex-col justify-center items-center">
+                                <span class="font-bold text-[10px] sm:text-xs whitespace-nowrap">חיובי חלש</span>
+                                <span class="text-[9px] sm:text-[11px] font-semibold mt-0.5 whitespace-nowrap" dir="ltr">0 &lt; <span class="math-expr">r</span> &lt; 0.4</span>
+                            </div>
+                            <!-- 7: חיובי בינוני (בין 0.4+ ל-0.7+) -->
+                            <div class="w-[13.8%] bg-teal-50 border border-teal-200 rounded-lg p-1 sm:p-1.5 text-teal-700 flex flex-col justify-center items-center">
+                                <span class="font-bold text-[10px] sm:text-xs whitespace-nowrap">חיובי בינוני</span>
+                                <span class="text-[9px] sm:text-[11px] font-semibold mt-0.5 whitespace-nowrap" dir="ltr">0.4 &le; <span class="math-expr">r</span> &lt; 0.7</span>
+                            </div>
+                            <!-- 8: חיובי חזק (בין 0.7+ ל-1.0+) -->
+                            <div class="w-[9.8%] bg-emerald-50 border border-emerald-200 rounded-lg p-1 sm:p-1.5 text-emerald-700 flex flex-col justify-center items-center">
+                                <span class="font-bold text-[9px] sm:text-xs whitespace-nowrap">חיובי חזק</span>
+                                <span class="text-[8px] sm:text-[10px] font-semibold mt-0.5 whitespace-nowrap" dir="ltr">0.7 &le; <span class="math-expr">r</span> &lt; 1.0</span>
+                            </div>
+                            <!-- 9: חיובי מושלם (ממורכז בדיוק ב-1.0+) -->
+                            <div class="w-[8%] bg-emerald-100 border border-emerald-300 rounded-lg p-1 sm:p-1.5 text-emerald-800 flex flex-col justify-center items-center">
+                                <span class="font-bold text-[9px] sm:text-xs whitespace-nowrap">חיובי מושלם</span>
+                                <span class="text-[9px] sm:text-[11px] font-semibold mt-0.5 whitespace-nowrap" dir="ltr"><span class="math-expr">r</span> = +1.0</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-slate-200">
+
+            <!-- SECTION 2: 9 SCATTER CARDS -->
+            <section class="space-y-6">
+                <div class="text-center">
+                    <h2 class="text-xl sm:text-2xl font-bold text-navy-900">
+                        סוגי קשרים לפי תרשימי פיזור
+                    </h2>
+                </div>
+
+                <div class="overflow-x-auto custom-scroll pb-4">
+                    <div dir="ltr" id="cardsGrid" class="grid grid-cols-9 gap-2 sm:gap-3 min-w-[980px] lg:min-w-0">
+                        
+                        <!-- CARD 0: שלילי מושלם (-1.0) -->
+                        <div data-card-index="0" class="correlation-card border-2 border-red-500 rounded-xl p-2.5 bg-white flex flex-col justify-between text-center shadow-sm">
+                            <div>
+                                <h3 class="font-black text-red-600 text-xs sm:text-sm">שלילי מושלם</h3>
+                                <div class="text-slate-600 text-xs my-1.5 whitespace-nowrap" dir="ltr"><span class="math-expr">r</span> = -1.0</div>
+                                <div class="bg-slate-50 rounded-lg p-1.5 border border-slate-200 my-2 aspect-square flex items-center justify-center">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <circle cx="15" cy="15" r="3.5" fill="#b91c1c" />
+                                        <circle cx="25" cy="25" r="3.5" fill="#b91c1c" />
+                                        <circle cx="35" cy="35" r="3.5" fill="#b91c1c" />
+                                        <circle cx="45" cy="45" r="3.5" fill="#b91c1c" />
+                                        <circle cx="55" cy="55" r="3.5" fill="#b91c1c" />
+                                        <circle cx="65" cy="65" r="3.5" fill="#b91c1c" />
+                                        <circle cx="75" cy="75" r="3.5" fill="#b91c1c" />
+                                        <circle cx="85" cy="85" r="3.5" fill="#b91c1c" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div dir="rtl" class="bg-red-50 text-red-700 text-[11px] font-bold rounded-md p-1.5 leading-tight">
+                                נקודות על ישר יורד במדויק
+                            </div>
+                        </div>
+
+                        <!-- CARD 1: שלילי חזק -->
+                        <div data-card-index="1" class="correlation-card border border-rose-300 rounded-xl p-2.5 bg-white flex flex-col justify-between text-center shadow-sm">
+                            <div>
+                                <h3 class="font-bold text-rose-600 text-xs sm:text-sm">שלילי חזק</h3>
+                                <div class="text-slate-600 text-xs my-1.5 whitespace-nowrap" dir="ltr">-1.0 &lt; <span class="math-expr">r</span> &le; -0.7</div>
+                                <div class="bg-slate-50 rounded-lg p-1.5 border border-slate-200 my-2 aspect-square flex items-center justify-center">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <circle cx="18" cy="15" r="3.5" fill="#dc2626" />
+                                        <circle cx="28" cy="30" r="3.5" fill="#dc2626" />
+                                        <circle cx="38" cy="35" r="3.5" fill="#dc2626" />
+                                        <circle cx="48" cy="48" r="3.5" fill="#dc2626" />
+                                        <circle cx="58" cy="52" r="3.5" fill="#dc2626" />
+                                        <circle cx="68" cy="68" r="3.5" fill="#dc2626" />
+                                        <circle cx="78" cy="74" r="3.5" fill="#dc2626" />
+                                        <circle cx="85" cy="84" r="3.5" fill="#dc2626" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div dir="rtl" class="bg-rose-50 text-rose-700 text-[11px] font-bold rounded-md p-1.5 leading-tight">
+                                מגמה יורדת ברורה וצפופה
+                            </div>
+                        </div>
+
+                        <!-- CARD 2: שלילי בינוני -->
+                        <div data-card-index="2" class="correlation-card border border-pink-300 rounded-xl p-2.5 bg-white flex flex-col justify-between text-center shadow-sm">
+                            <div>
+                                <h3 class="font-bold text-pink-600 text-xs sm:text-sm">שלילי בינוני</h3>
+                                <div class="text-slate-600 text-xs my-1.5 whitespace-nowrap" dir="ltr">-0.7 &lt; <span class="math-expr">r</span> &le; -0.4</div>
+                                <div class="bg-slate-50 rounded-lg p-1.5 border border-slate-200 my-2 aspect-square flex items-center justify-center">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <circle cx="20" cy="20" r="3.5" fill="#e11d48" />
+                                        <circle cx="30" cy="38" r="3.5" fill="#e11d48" />
+                                        <circle cx="38" cy="22" r="3.5" fill="#e11d48" />
+                                        <circle cx="48" cy="45" r="3.5" fill="#e11d48" />
+                                        <circle cx="58" cy="62" r="3.5" fill="#e11d48" />
+                                        <circle cx="66" cy="48" r="3.5" fill="#e11d48" />
+                                        <circle cx="78" cy="70" r="3.5" fill="#e11d48" />
+                                        <circle cx="82" cy="82" r="3.5" fill="#e11d48" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div dir="rtl" class="bg-pink-50 text-pink-700 text-[11px] font-bold rounded-md p-1.5 leading-tight">
+                                מגמת ירידה מתונה ופזורה
+                            </div>
+                        </div>
+
+                        <!-- CARD 3: שלילי חלש -->
+                        <div data-card-index="3" class="correlation-card border border-orange-300 rounded-xl p-2.5 bg-white flex flex-col justify-between text-center shadow-sm">
+                            <div>
+                                <h3 class="font-bold text-orange-600 text-xs sm:text-sm">שלילי חלש</h3>
+                                <div class="text-slate-600 text-xs my-1.5 whitespace-nowrap" dir="ltr">-0.4 &lt; <span class="math-expr">r</span> &lt; 0</div>
+                                <div class="bg-slate-50 rounded-lg p-1.5 border border-slate-200 my-2 aspect-square flex items-center justify-center">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <circle cx="22" cy="35" r="3.5" fill="#ea580c" />
+                                        <circle cx="35" cy="25" r="3.5" fill="#ea580c" />
+                                        <circle cx="32" cy="55" r="3.5" fill="#ea580c" />
+                                        <circle cx="50" cy="40" r="3.5" fill="#ea580c" />
+                                        <circle cx="52" cy="68" r="3.5" fill="#ea580c" />
+                                        <circle cx="68" cy="50" r="3.5" fill="#ea580c" />
+                                        <circle cx="72" cy="72" r="3.5" fill="#ea580c" />
+                                        <circle cx="84" cy="60" r="3.5" fill="#ea580c" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div dir="rtl" class="bg-orange-50 text-orange-700 text-[11px] font-bold rounded-md p-1.5 leading-tight">
+                                נטייה קלה מאוד למטה
+                            </div>
+                        </div>
+
+                        <!-- CARD 4: העדר קשר (0) -->
+                        <div data-card-index="4" class="correlation-card border-2 border-slate-400 rounded-xl p-2.5 bg-white flex flex-col justify-between text-center shadow-sm">
+                            <div>
+                                <h3 class="font-black text-slate-700 text-xs sm:text-sm">העדר קשר</h3>
+                                <div class="text-slate-600 text-xs my-1.5 whitespace-nowrap" dir="ltr"><span class="math-expr">r</span> = 0</div>
+                                <div class="bg-slate-50 rounded-lg p-1.5 border border-slate-200 my-2 aspect-square flex items-center justify-center">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <circle cx="25" cy="48" r="3.5" fill="#475569" />
+                                        <circle cx="35" cy="72" r="3.5" fill="#475569" />
+                                        <circle cx="45" cy="25" r="3.5" fill="#475569" />
+                                        <circle cx="50" cy="55" r="3.5" fill="#475569" />
+                                        <circle cx="60" cy="78" r="3.5" fill="#475569" />
+                                        <circle cx="70" cy="35" r="3.5" fill="#475569" />
+                                        <circle cx="78" cy="60" r="3.5" fill="#475569" />
+                                        <circle cx="82" cy="28" r="3.5" fill="#475569" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div dir="rtl" class="bg-slate-100 text-slate-700 text-[11px] font-bold rounded-md p-1.5 leading-tight">
+                                פיזור אקראי ללא כיוון
+                            </div>
+                        </div>
+
+                        <!-- CARD 5: חיובי חלש -->
+                        <div data-card-index="5" class="correlation-card border border-cyan-300 rounded-xl p-2.5 bg-white flex flex-col justify-between text-center shadow-sm">
+                            <div>
+                                <h3 class="font-bold text-cyan-600 text-xs sm:text-sm">חיובי חלש</h3>
+                                <div class="text-slate-600 text-xs my-1.5 whitespace-nowrap" dir="ltr">0 &lt; <span class="math-expr">r</span> &lt; 0.4</div>
+                                <div class="bg-slate-50 rounded-lg p-1.5 border border-slate-200 my-2 aspect-square flex items-center justify-center">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <circle cx="20" cy="65" r="3.5" fill="#0891b2" />
+                                        <circle cx="32" cy="72" r="3.5" fill="#0891b2" />
+                                        <circle cx="38" cy="45" r="3.5" fill="#0891b2" />
+                                        <circle cx="52" cy="60" r="3.5" fill="#0891b2" />
+                                        <circle cx="58" cy="38" r="3.5" fill="#0891b2" />
+                                        <circle cx="72" cy="48" r="3.5" fill="#0891b2" />
+                                        <circle cx="78" cy="30" r="3.5" fill="#0891b2" />
+                                        <circle cx="85" cy="42" r="3.5" fill="#0891b2" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div dir="rtl" class="bg-cyan-50 text-cyan-700 text-[11px] font-bold rounded-md p-1.5 leading-tight">
+                                נטייה קלה מאוד למעלה
+                            </div>
+                        </div>
+
+                        <!-- CARD 6: חיובי בינוני -->
+                        <div data-card-index="6" class="correlation-card border border-teal-300 rounded-xl p-2.5 bg-white flex flex-col justify-between text-center shadow-sm">
+                            <div>
+                                <h3 class="font-bold text-teal-600 text-xs sm:text-sm">חיובי בינוני</h3>
+                                <div class="text-slate-600 text-xs my-1.5 whitespace-nowrap" dir="ltr">0.4 &le; <span class="math-expr">r</span> &lt; 0.7</div>
+                                <div class="bg-slate-50 rounded-lg p-1.5 border border-slate-200 my-2 aspect-square flex items-center justify-center">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <circle cx="22" cy="78" r="3.5" fill="#0d9488" />
+                                        <circle cx="28" cy="62" r="3.5" fill="#0d9488" />
+                                        <circle cx="42" cy="68" r="3.5" fill="#0d9488" />
+                                        <circle cx="50" cy="48" r="3.5" fill="#0d9488" />
+                                        <circle cx="58" cy="55" r="3.5" fill="#0d9488" />
+                                        <circle cx="70" cy="32" r="3.5" fill="#0d9488" />
+                                        <circle cx="78" cy="45" r="3.5" fill="#0d9488" />
+                                        <circle cx="84" cy="25" r="3.5" fill="#0d9488" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div dir="rtl" class="bg-teal-50 text-teal-700 text-[11px] font-bold rounded-md p-1.5 leading-tight">
+                                מגמת עלייה מתונה ופזורה
+                            </div>
+                        </div>
+
+                        <!-- CARD 7: חיובי חזק -->
+                        <div data-card-index="7" class="correlation-card border border-emerald-300 rounded-xl p-2.5 bg-white flex flex-col justify-between text-center shadow-sm">
+                            <div>
+                                <h3 class="font-bold text-emerald-600 text-xs sm:text-sm">חיובי חזק</h3>
+                                <div class="text-slate-600 text-xs my-1.5 whitespace-nowrap" dir="ltr">0.7 &le; <span class="math-expr">r</span> &lt; 1.0</div>
+                                <div class="bg-slate-50 rounded-lg p-1.5 border border-slate-200 my-2 aspect-square flex items-center justify-center">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <circle cx="18" cy="82" r="3.5" fill="#059669" />
+                                        <circle cx="25" cy="75" r="3.5" fill="#059669" />
+                                        <circle cx="35" cy="66" r="3.5" fill="#059669" />
+                                        <circle cx="45" cy="56" r="3.5" fill="#059669" />
+                                        <circle cx="55" cy="46" r="3.5" fill="#059669" />
+                                        <circle cx="68" cy="34" r="3.5" fill="#059669" />
+                                        <circle cx="76" cy="26" r="3.5" fill="#059669" />
+                                        <circle cx="85" cy="18" r="3.5" fill="#059669" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div dir="rtl" class="bg-emerald-50 text-emerald-700 text-[11px] font-bold rounded-md p-1.5 leading-tight">
+                                מגמה עולה ברורה וצפופה
+                            </div>
+                        </div>
+
+                        <!-- CARD 8: חיובי מושלם (+1.0) -->
+                        <div data-card-index="8" class="correlation-card border-2 border-emerald-600 rounded-xl p-2.5 bg-white flex flex-col justify-between text-center shadow-sm">
+                            <div>
+                                <h3 class="font-black text-emerald-700 text-xs sm:text-sm">חיובי מושלם</h3>
+                                <div class="text-slate-600 text-xs my-1.5 whitespace-nowrap" dir="ltr"><span class="math-expr">r</span> = +1.0</div>
+                                <div class="bg-slate-50 rounded-lg p-1.5 border border-slate-200 my-2 aspect-square flex items-center justify-center">
+                                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                                        <circle cx="15" cy="85" r="3.5" fill="#047857" />
+                                        <circle cx="25" cy="75" r="3.5" fill="#047857" />
+                                        <circle cx="35" cy="65" r="3.5" fill="#047857" />
+                                        <circle cx="45" cy="55" r="3.5" fill="#047857" />
+                                        <circle cx="55" cy="45" r="3.5" fill="#047857" />
+                                        <circle cx="65" cy="35" r="3.5" fill="#047857" />
+                                        <circle cx="75" cy="25" r="3.5" fill="#047857" />
+                                        <circle cx="85" cy="15" r="3.5" fill="#047857" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div dir="rtl" class="bg-emerald-100 text-emerald-800 text-[11px] font-bold rounded-md p-1.5 leading-tight">
+                                נקודות על ישר עולה במדויק
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-slate-200">
+
+            <!-- SECTION 3: INTERACTIVE SIMULATOR AT BOTTOM -->
+            <section class="bg-slate-50 border border-slate-200 rounded-xl p-5 shadow-inner space-y-4">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="text-right space-y-1">
+                        <h3 class="font-bold text-navy-900 text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-blue-600"></i>
+                            סימולטור מתאם אינטראקטיבי
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-600">
+                            הזז את הסרגל כדי לבדוק ערכי <span class="math-expr">r</span> שונים ולראות את ההדגשה הדינמית על הכרטיסייה המתאימה:
+                        </p>
+                    </div>
+
+                    <div class="w-full md:w-auto flex flex-col sm:flex-row items-center gap-4 bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm">
+                        <div dir="ltr" class="flex items-center gap-3 w-full sm:w-64">
+                            <span class="text-xs font-bold text-red-600" dir="ltr">-1.0</span>
+                            <input id="rSlider" type="range" min="-1" max="1" step="0.05" value="-1" class="w-full accent-blue-600 cursor-pointer">
+                            <span class="text-xs font-bold text-emerald-600" dir="ltr">+1.0</span>
+                        </div>
+                        <div class="text-center min-w-[130px]">
+                            <span class="text-xs text-slate-400 block">ערך <span class="math-expr">r</span> נבחר</span>
+                            <span id="rValueDisplay" dir="ltr" class="text-lg font-black text-blue-700 block min-h-[28px]">r = -1.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LIVE INTERACTIVE GRAPH -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-center gap-6">
+                    <div class="w-48 h-48 bg-slate-50 border border-slate-300 rounded-lg p-2 shadow-inner">
+                        <svg id="liveScatterSvg" viewBox="0 0 100 100" class="w-full h-full">
+                            <!-- SVG Dots rendered dynamically -->
+                        </svg>
+                    </div>
+                    <div class="text-center sm:text-right space-y-2">
+                        <div id="liveCategoryTitle" class="text-lg font-bold text-navy-900">חיובי חזק</div>
+                        <div id="liveCategoryDesc" class="text-xs sm:text-sm text-slate-600 max-w-xs leading-relaxed">מגמה עולה ברורה וצפופה.</div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER SECTION -->
+        <footer class="bg-navy-900 text-white p-4 text-center text-sm font-medium border-t border-slate-800">
+            הוכן על ידי רגינה צ'ולסקי
+        </footer>
+
+    </div>
+
+    <!-- DYNAMIC INTERACTION SCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const rSlider = document.getElementById('rSlider');
+            const rValueDisplay = document.getElementById('rValueDisplay');
+            const liveScatterSvg = document.getElementById('liveScatterSvg');
+            const liveCategoryTitle = document.getElementById('liveCategoryTitle');
+            const liveCategoryDesc = document.getElementById('liveCategoryDesc');
+            const cards = document.querySelectorAll('.correlation-card');
+
+            function getCategoryData(r) {
+                const val = Math.round(r * 100) / 100;
+                if (val === -1) {
+                    return { index: 0, title: "שלילי מושלם", desc: "נקודות על ישר יורד במדויק", color: "#b91c1c" };
+                }
+                if (val > -1 && val <= -0.7) {
+                    return { index: 1, title: "שלילי חזק", desc: "מגמה יורדת ברורה וצפופה", color: "#dc2626" };
+                }
+                if (val > -0.7 && val <= -0.4) {
+                    return { index: 2, title: "שלילי בינוני", desc: "מגמת ירידה מתונה ופזורה", color: "#e11d48" };
+                }
+                if (val > -0.4 && val < 0) {
+                    return { index: 3, title: "שלילי חלש", desc: "נטייה קלה מאוד למטה", color: "#ea580c" };
+                }
+                if (val === 0) {
+                    return { index: 4, title: "העדר קשר", desc: "פיזור אקראי ללא כיוון", color: "#475569" };
+                }
+                if (val > 0 && val < 0.4) {
+                    return { index: 5, title: "חיובי חלש", desc: "נטייה קלה מאוד למעלה", color: "#0891b2" };
+                }
+                if (val >= 0.4 && val < 0.7) {
+                    return { index: 6, title: "חיובי בינוני", desc: "מגמת עלייה מתונה ופזורה", color: "#0d9488" };
+                }
+                if (val >= 0.7 && val < 1) {
+                    return { index: 7, title: "חיובי חזק", desc: "מגמה עולה ברורה וצפופה", color: "#059669" };
+                }
+                return { index: 8, title: "חיובי מושלם", desc: "נקודות על ישר עולה במדויק", color: "#047857" };
+            }
+
+            function updateLiveGraph(r) {
+                const roundedR = Math.round(r * 100) / 100;
+                
+                let formattedR = "";
+                if (roundedR > 0) {
+                    formattedR = 'r = +' + roundedR.toFixed(2);
+                } else if (roundedR === 0) {
+                    formattedR = 'r = 0';
+                } else {
+                    formattedR = 'r = -' + Math.abs(roundedR).toFixed(2);
+                }
+
+                rValueDisplay.innerHTML = '<span class="math-expr">r</span> = ' + (roundedR > 0 ? '+' + roundedR.toFixed(2) : (roundedR === 0 ? '0' : '-' + Math.abs(roundedR).toFixed(2)));
+
+                const catData = getCategoryData(roundedR);
+                liveCategoryTitle.textContent = catData.title;
+                liveCategoryDesc.textContent = catData.desc;
+
+                cards.forEach(function (card, idx) {
+                    if (idx === catData.index) {
+                        card.classList.add('ring-4', 'ring-blue-500', 'scale-105', 'z-10');
+                    } else {
+                        card.classList.remove('ring-4', 'ring-blue-500', 'scale-105', 'z-10');
+                    }
+                });
+
+                const pointCount = 12;
+                const seedNoises = [0.0, 0.35, -0.25, 0.4, -0.4, 0.15, -0.3, 0.25, -0.15, 0.3, -0.35, 0.05];
+                let svgHtml = '';
+                
+                svgHtml += '<line x1="10" y1="90" x2="90" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>';
+                svgHtml += '<line x1="10" y1="10" x2="10" y2="90" stroke="#cbd5e1" stroke-width="1.5"/>';
+
+                for (let i = 0; i < pointCount; i++) {
+                    const xNorm = 0.15 + (i / (pointCount - 1)) * 0.7;
+                    let yNorm = 0.5 - (xNorm - 0.5) * roundedR;
+                    const noise = seedNoises[i % seedNoises.length] * (1 - Math.abs(roundedR)) * 0.35;
+                    yNorm += noise;
+                    yNorm = Math.max(0.12, Math.min(0.88, yNorm));
+
+                    const cx = (xNorm * 100).toFixed(1);
+                    const cy = (yNorm * 100).toFixed(1);
+
+                    svgHtml += '<circle cx="' + cx + '" cy="' + cy + '" r="3.5" fill="' + catData.color + '" />';
+                }
+
+                liveScatterSvg.innerHTML = svgHtml;
+            }
+
+            if (rSlider) {
+                rSlider.addEventListener('input', function (e) {
+                    updateLiveGraph(parseFloat(e.target.value));
+                });
+                updateLiveGraph(parseFloat(rSlider.value));
+            }
+        });
+    </script>
+</body>
+</html>
